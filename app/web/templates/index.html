@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini RAG Chatbot</title>
+
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            width: 800px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2a5298;
+        }
+
+        h3 {
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 90px;
+            resize: none;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            background: #2a5298;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+        }
+
+        .output-box {
+            background: #f4f6fa;
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 60px;
+            white-space: pre-wrap;
+            border-left: 4px solid #2a5298;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .status {
+            font-size: 13px;
+            color: gray;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>🤖 Mini RAG Chatbot</h2>
+
+    <div class="section">
+        <h3>Upload Documents</h3>
+        <input type="file" id="files" multiple />
+        <button onclick="upload()">Upload</button>
+        <div class="status" id="uploadStatus"></div>
+    </div>
+
+    <div class="section">
+        <h3>Ask a Question</h3>
+        <textarea id="query" placeholder="Ask something about your uploaded documents..."></textarea>
+        <button onclick="send()">Ask</button>
+    </div>
+
+    <div class="section">
+        <h3>Answer</h3>
+        <div class="output-box" id="answer"></div>
+    </div>
+
+    <div class="section">
+        <h3>Context Used</h3>
+        <div class="output-box" id="context"></div>
+    </div>
+
+</div>
+
+<script>
+async function upload() {
+    const files = document.getElementById("files").files;
+    if (!files.length) {
+        alert("Please select files first");
+        return;
+    }
+
+    const formData = new FormData();
+    for (const file of files) {
+        formData.append("files", file);
+    }
+
+    const res = await fetch("/upload", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+    document.getElementById("uploadStatus").innerText = data.status;
+}
+
+async function send() {
+    const query = document.getElementById("query").value;
+
+    if (!query.trim()) {
+        alert("Please enter a question");
+        return;
+    }
+
+    document.getElementById("answer").innerText = "Thinking...";
+    document.getElementById("context").innerText = "";
+
+    const res = await fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({query})
+    });
+
+    const data = await res.json();
+
+    document.getElementById("answer").innerText = data.answer;
+    document.getElementById("context").innerText = data.context || "No context retrieved.";
+}
+</script>
+
+</body>
+</html>

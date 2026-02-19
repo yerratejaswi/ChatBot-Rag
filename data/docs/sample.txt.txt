@@ -1,0 +1,7 @@
+“Hi, I’m Tejaswi Yerra. I’m a Java Full Stack Developer with a little over 3 years of experience building and scaling enterprise applications, primarily using Java, Spring Boot, and microservices architecture.
+
+Currently, I’m working at Elevance Health, where I’m involved end-to-end in designing and developing cloud-native microservices on AWS and Pivotal Cloud Foundry. My work includes building REST APIs with Spring Boot, integrating Kafka and RabbitMQ for asynchronous messaging, securing services with Spring Security and OAuth2, and deploying containerized applications using Docker. I’ve also worked on serverless components using AWS Lambda and API Gateway.
+
+Before that, I worked with GM Finance, where I focused on migrating legacy systems to microservices, building event-driven systems with Kafka, and developing modern front-end interfaces using React and Angular. Across my roles, I’ve consistently worked in Agile teams, followed TDD and CI/CD practices using Jenkins and Maven, and supported applications in production.
+
+Overall, I enjoy working on distributed systems, solving performance and scalability challenges, and building reliable backend services that support real business use cases.”
